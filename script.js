@@ -9,6 +9,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -88,6 +92,44 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+// Tabbed Component
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!clicked) return;
+
+  // Activate tab
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area
+  tabsContent.forEach(t => t.classList.remove('operations__content--active'));
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// Menu fade animation
+const handlerHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+
+    logo.style.opacity = this;
+  }
+};
+
+// Passing "argument" into event handler
+nav.addEventListener('mouseover', handlerHover.bind(0.5));
+nav.addEventListener('mouseout', handlerHover.bind(1));
 
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -219,5 +261,36 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 document.querySelector('.nav').addEventListener('click', function (e) {
   this.style.backgroundColor = randomColor();
   console.log('NAV', e.target, e.currentTarget);
+});
+*/
+
+/* DOM Traversing
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children);
+
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards: parent
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
 });
 */
